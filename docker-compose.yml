@@ -1,0 +1,59 @@
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: weatherapp-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: weatherdb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - weathernet
+
+  # För framtida analys/relationslagring
+  neo4j:
+    image: neo4j:5.25
+    container_name: weatherapp-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"   # web UI
+      - "7687:7687"   # bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    networks:
+      - weathernet
+    # kan kommenteras bort tills vidare
+
+  # För framtida MQTT-integration
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: weatherapp-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_config:/mosquitto/config
+      - mosquitto_log:/mosquitto/log
+    networks:
+      - weathernet
+    # kan också kommenteras bort tills vidare
+
+volumes:
+  mongo_data:
+  neo4j_data:
+  neo4j_logs:
+  mosquitto_data:
+  mosquitto_config:
+  mosquitto_log:
+
+networks:
+  weathernet:
+    driver: bridge

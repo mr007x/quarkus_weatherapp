@@ -1,0 +1,20 @@
+quarkus:
+  http:
+    port: 8080
+  log:
+    console:
+      format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+  mongodb:
+    connection-string: "mongodb://localhost:27017"
+    database: "weatherapp"
+  smallrye-openapi:
+    path: /openapi
+
+smhi:
+  base-url: "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2"
+  default-station: "1"
+  update-interval-minutes: 15
+
+yrno:
+  base-url: "https://api.met.no/weatherapi/locationforecast/2.0"
+  user-agent: "WeatherApp (mikaeljacobsson@yahoo.se)"
